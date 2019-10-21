@@ -1,62 +1,65 @@
 import requests
-from requests.exceptions import RequestException
-import contextlib
 from bs4 import BeautifulSoup
+import json
+import os
 import IPython
 
 
-class web_scrap(object):
+code_folder = 'problems'
+os.makedirs(code_folder, exist_ok=True)
+with open('login_data.json') as fp:
+    login_data = json.load(fp)
 
-    def __init__(self):
-        self.sess = requests.session()
-
-    def simple_get(self, url):
-        """
-        Attempts to get the content at `url` by making an HTTP GET request.
-        If the content-type of response is some kind of HTML/XML, return the
-        text content, otherwise return None.
-        """
-        try:
-            with contextlib.closing(requests.get(url, stream=True)) as resp:
-                if self.is_good_response(resp):
-                    return resp.content
-                else:
-                    return None
-
-        except RequestException as e:
-            self.log_error('Error during requests to {0} : {1}'.format(url, str(e)))
-            return None
-
-    def is_good_response(self, resp):
-        """
-        Returns True if the response seems to be HTML, False otherwise.
-        """
-        content_type = resp.headers['Content-Type'].lower()
-        return (resp.status_code == 200
-                and content_type is not None
-                and content_type.find('html') > -1)
-
-    def log_error(self, e):
-        """
-        It is always a good idea to log errors.
-        This function just prints them, but you can
-        make it do anything.
-        """
-        print(e)
-
-    def login(self, url, login_data):
-        """
-        log in using the current session
-        :param login_data:
-        :return:
-        """
-        if self.sess is None:
-            self.sess = requests.session()
-        self.sess.post(url, login_data)
+sess = requests.Session()
+login_url = 'http://bailian.openjudge.cn/api/auth/login/'
+sess.get("http://openjudge.cn/auth/login/")
+sess.post(login_url, data=login_data) # , headers=dict(referer=login_url), verify=True
+user_url = 'http://openjudge.cn/user/17014/'
+# print(soup.prettify())
+problem_set = set()
 
 
-myscrap = web_scrap()
-myscrap.login()
-raw_html = myscrap.simple_get('http://openjudge.cn/user/17014/')
+def retrieve_codes(url):
+    reps = sess.get(url)
+    soup = BeautifulSoup(reps.text, 'html.parser')
+    titles = soup.find_all(class_="title")[1:]
+    statuses = soup.find_all(class_="result")[1:]
+    for title, status in zip(titles, statuses):
+        if title.text in problem_set:
+            continue
+        save_file = os.path.join(code_folder, title.text.replace(': ', "_") + ".cpp")
+        if os.path.isfile(save_file):
+            problem_set.add(title.text)
+            continue
+        accepted = status.find_all(class_="result-right")
+        if len(accepted) > 0:
+            # get code
+            accepted = accepted[0]
+            code_url = accepted['href']
+            code_page = sess.get(code_url)
+            code_soup = BeautifulSoup(code_page.text, 'html.parser')
+            code_block = code_soup.find("pre").text
 
-IPython.embed()
+            # get question
+            question_url = title.find("a")['href']
+            question_page = sess.get(question_url)
+            question_soup = BeautifulSoup(question_page.text, 'html.parser')
+            question_block = question_soup.find(class_="problem-content").text
+
+            # save solution
+            code_block = "/*\n" + title.text + "\n" + \
+                         title.find("a")["href"] + "\n\n" + \
+                         question_block + "\n*/\n\n" + \
+                         code_block
+            with open(save_file, "w") as f:
+                print(code_block.encode('utf-8'), file=f)
+            problem_set.add(title.text)
+
+
+retrieve_codes(user_url)
+for ipage in range(2, 13):
+    newurl = user_url + '/?page=' + str(ipage)
+    retrieve_codes(newurl)
+
+
+
