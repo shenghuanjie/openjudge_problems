@@ -1,1 +1,55 @@
-b'/*\n2809: \xe8\xae\xa1\xe7\xae\x972\xe7\x9a\x84N\xe6\xac\xa1\xe6\x96\xb9\nhttp://bailian.openjudge.cn/practice/2809/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\n\xe4\xbb\xbb\xe6\x84\x8f\xe7\xbb\x99\xe5\xae\x9a\xe4\xb8\x80\xe4\xb8\xaa\xe6\xad\xa3\xe6\x95\xb4\xe6\x95\xb0N(N<=100)\xef\xbc\x8c\xe8\xae\xa1\xe7\xae\x972\xe7\x9a\x84n\xe6\xac\xa1\xe6\x96\xb9\xe7\x9a\x84\xe5\x80\xbc\xe3\x80\x82\n\xe8\xbe\x93\xe5\x85\xa5\n\xe8\xbe\x93\xe5\x85\xa5\xe4\xb8\x80\xe4\xb8\xaa\xe6\xad\xa3\xe6\x95\xb4\xe6\x95\xb0N\xe3\x80\x82\n\xe8\xbe\x93\xe5\x87\xba\n\xe8\xbe\x93\xe5\x87\xba2\xe7\x9a\x84N\xe6\xac\xa1\xe6\x96\xb9\xe7\x9a\x84\xe5\x80\xbc\xe3\x80\x82\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n5\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n32\r\n\n\xe6\x8f\x90\xe7\xa4\xba\n\xe9\xab\x98\xe7\xb2\xbe\xe5\xba\xa6\xe8\xae\xa1\xe7\xae\x97\n\n*/\n\n#include<iostream>\nusing namespace std;\nint main()\n{\n\tshort result[201]={2};\n\tint n;\n\tint w=0;\n\tcin>>n;\n\tfor(int i=1;i<n;i++)\n\t{\n\t\tw=0;\n\t\twhile(w<100)\n\t\t{\n\t\t\tresult[w]*=2;\n\t\t\tw++;\n\t\t}\n\t\tw=0;\n\t\twhile(w<100)\n\t\t{\n\t\t\tif(result[w]>=10)\n\t\t\t{\n\t\t\t\tresult[w]-=10;\n\t\t\t\tresult[w+1]++;\n\t\t\t}\n\t\t\tw++;\n\t\t}\n\t}\n\tw=100;\n\twhile(result[w]==0)w--;\n\tfor(;w>=0;w--)\n\t\tcout<<result[w];\n\tcout<<endl;\n\treturn 0;\n}'
+/*
+2809: 计算2的N次方
+http://bailian.openjudge.cn/practice/2809/
+
+
+描述
+任意给定一个正整数N(N<=100)，计算2的n次方的值。
+输入
+输入一个正整数N。
+输出
+输出2的N次方的值。
+样例输入
+5
+样例输出
+32
+
+提示
+高精度计算
+
+*/
+
+#include<iostream>
+using namespace std;
+int main()
+{
+	short result[201]={2};
+	int n;
+	int w=0;
+	cin>>n;
+	for(int i=1;i<n;i++)
+	{
+		w=0;
+		while(w<100)
+		{
+			result[w]*=2;
+			w++;
+		}
+		w=0;
+		while(w<100)
+		{
+			if(result[w]>=10)
+			{
+				result[w]-=10;
+				result[w+1]++;
+			}
+			w++;
+		}
+	}
+	w=100;
+	while(result[w]==0)w--;
+	for(;w>=0;w--)
+		cout<<result[w];
+	cout<<endl;
+	return 0;
+}

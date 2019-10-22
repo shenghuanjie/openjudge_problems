@@ -1,1 +1,76 @@
-b'/*\n1240: Pre-Post-erous!\nhttp://bailian.openjudge.cn/practice/1240/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\nWe are all familiar with pre-order, in-order and post-order traversals of binary trees. A common problem in data structure classes is to find the pre-order traversal of a binary tree when given the in-order and post-order traversals. Alternatively, you can find the post-order traversal when given the in-order and pre-order. However, in general you cannot determine the in-order traversal of a tree when given its pre-order and post-order traversals. Consider the four binary trees below:    a   a   a   a   /   /     \\   \\  b   b       b   b /     \\     /     \\c       c   c       cAll of these trees have the same pre-order and post-order traversals. This phenomenon is not restricted to binary trees, but holds for general m-ary trees as well.\n\xe8\xbe\x93\xe5\x85\xa5\nInput will consist of multiple problem instances. Each instance will consist of a line of the formm s1 s2indicating that the trees are m-ary trees, s1 is the pre-order traversal and s2 is the post-order traversal.All traversal strings will consist of lowercase alphabetic characters. For all input instances, 1 <= m <= 20 and the length of s1 and s2 will be between 1 and 26 inclusive. If the length of s1 is k (which is the same as the length of s2, of course), the first k letters of the alphabet will be used in the strings. An input line of 0 will terminate the input.\n\xe8\xbe\x93\xe5\x87\xba\nFor each problem instance, you should output one line containing the number of possible trees which would result in the pre-order and post-order traversals for the instance. All output values will be within the range of a 32-bit signed integer. For each problem instance, you are guaranteed that there is at least one tree with the given pre-order and post-order traversals.\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n2 abc cba\r\n2 abc bca\r\n10 abc bca\r\n13 abejkcfghid jkebfghicda\r\n0\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n4\r\n1\r\n45\r\n207352860\n\xe6\x9d\xa5\xe6\xba\x90\nEast Central North America 2002\n\n*/\n\n#include<iostream>\n#include<string>\nusing namespace std;\n/*\xe7\x94\xb1\xe5\x89\x8d\xe5\xba\x8f\xe9\x81\x8d\xe5\x8e\x86\xe5\x92\x8c\xe5\x90\x8e\xe5\xba\x8f\xe9\x81\x8d\xe5\x8e\x86\xe5\x8f\xaa\xe8\x83\xbd\xe5\xbe\x97\xe5\x88\xb0\xe6\xaf\x8f\xe4\xb8\xaa\xe7\xbb\x93\xe7\x82\xb9\xe7\x9a\x84\xe5\x84\xbf\xe5\xad\x90\xe4\xb8\xaa\xe6\x95\xb0\xef\xbc\x8c\xe7\x84\xb6\xe5\x90\x8e\xe6\xa0\xb9\xe6\x8d\xae\xe6\x8e\x92\xe5\x88\x97\xe7\xbb\x84\xe5\x90\x88\xe5\x8f\xaf\xe4\xbb\xa5\xe5\xbe\x97\xe5\x88\xb0\xe5\x8f\xaf\xe8\x83\xbd\xe6\x83\x85\xe5\x86\xb5*/\nstring former,later;\nint round,total;//round\xe6\x98\xaf\xe7\x94\xa8\xe6\x9d\xa5\xe9\x81\x8d\xe5\x8e\x86\xe5\x89\x8d\xe5\xba\x8f\xe9\x81\x8d\xe5\x8e\x86\xe7\x9a\x84\xe5\xba\x8f\xe5\x88\x97\xe7\x9a\x84\xef\xbc\x8c\xe4\xbf\x9d\xe8\xaf\x81\xe6\xaf\x8f\xe4\xb8\xaa\xe7\xbb\x93\xe7\x82\xb9\xe7\x9a\x84\xe5\x84\xbf\xe5\xad\x90\xe4\xb8\xaa\xe6\x95\xb0\xe9\x83\xbd\xe6\xb1\x82\xe4\xb8\x80\xe9\x81\x8d\xe3\x80\x82\nint m;\nint c(int n,int m){\n\tif(n>m-n)\n\t\tn=m-n;\n\tint i,k=m-n+1,ret=1;\n\tfor(i=0;i<n;i++)ret=ret*(k+i)/(i+1);\n\treturn ret;\n}\nvoid getson(int i,int j)\n{\n\tif(i>j)return;\n\tint temp,sons=0;\n\tfor(temp=i;temp<=j;temp++)\n\t{\n\t\tif(later[temp]==former[round])//\xe5\x9c\xa8\xe5\x90\x8e\xe5\xba\x8f\xe4\xb8\xad\xe6\x89\xbe\xe5\x88\xb0\xe4\xba\x86\xe5\x89\x8d\xe5\xba\x8f\xe4\xb8\xad\xe7\x9b\xb8\xe5\xba\x94\xe7\x9a\x84\xe7\xbb\x93\xe7\x82\xb9\xef\xbc\x8c\xe6\x98\xaf\xe4\xb8\x8a\xe4\xb8\x80\xe4\xb8\xaa\xe8\x8a\x82\xe7\x82\xb9\xe7\x9a\x84\xe5\x84\xbf\xe5\xad\x90\n\t\t{\n\t\t\tsons++;//\xe5\x84\xbf\xe5\xad\x90\xe6\x95\xb0\xe5\x8a\xa0\xe4\xb8\x80\xe4\xb8\xaa\n\t\t\tround++;//\xe6\x89\xbe\xe4\xb8\x8b\xe4\xb8\x80\xe4\xb8\xaa\xe8\x8a\x82\xe7\x82\xb9\xe7\x9a\x84\xe5\x84\xbf\xe5\xad\x90\n\t\t\tgetson(i,temp-1);//\xe5\x90\x8e\xe5\xba\x8f\xe9\x81\x8d\xe5\x8e\x86\xe4\xb8\xad\xef\xbc\x8c\xe5\xb7\xa6\xe8\xbe\xb9\xe7\x9a\x84\xe6\x98\xaf\xe5\xbd\x93\xe5\x89\x8d\xe8\x8a\x82\xe7\x82\xb9\xe7\x9a\x84\xe5\x84\xbf\xe5\xad\x90\xef\xbc\x8c\xe9\x80\x92\xe5\xbd\x92\xe8\xae\xa1\xe7\xae\x97\n\t\t\ti=temp+1;//\xe7\xbb\xa7\xe7\xbb\xad\xe7\x9c\x8b\xe5\x90\x8e\xe5\xba\x8f\xe4\xb8\xad\xe5\x8f\xb3\xe8\xbe\xb9\xe7\x9a\x84\xe9\x83\xa8\xe5\x88\x86\xef\xbc\x8c\xe6\x89\xbe\xe4\xb8\x8b\xe4\xb8\x80\xe4\xb8\xaa\xe5\x84\xbf\xe5\xad\x90\n\t\t}\n\n\t}\n\ttotal*=c(sons,m);\n}\nint main()\n{\n\twhile(1)\n\t{\n\t\tcin>>m;\n\t\tif(m==0)\n\t\t{\n\t\t\tbreak;\n\t\t}\n\t\tcin>>former>>later;\n\t\tround=1;\n\t\ttotal=1;\n\t\tgetson(0,former.length()-2);//\xe5\x8e\xbb\xe6\x8e\x89\xe6\xa0\xb9\xe7\xbb\x93\xe7\x82\xb9\xef\xbc\x8c\xe5\xbc\x80\xe5\xa7\x8b\xe9\x80\x92\xe5\xbd\x92\xe6\xb1\x82\xe5\x84\xbf\xe5\xad\x90\xe4\xb8\xaa\xe6\x95\xb0\xef\xbc\x8c\xe5\xb9\xb6\xe8\xae\xa1\xe7\xae\x97\xe5\x8f\xaf\xe8\x83\xbd\xe7\x9a\x84\xe6\x8e\x92\xe5\x88\x97\xe6\x96\xb9\xe5\xbc\x8f\n\t\tcout<<total<<endl;\n\t}\n\treturn 0;\n}\n'
+/*
+1240: Pre-Post-erous!
+http://bailian.openjudge.cn/practice/1240/
+
+
+描述
+We are all familiar with pre-order, in-order and post-order traversals of binary trees. A common problem in data structure classes is to find the pre-order traversal of a binary tree when given the in-order and post-order traversals. Alternatively, you can find the post-order traversal when given the in-order and pre-order. However, in general you cannot determine the in-order traversal of a tree when given its pre-order and post-order traversals. Consider the four binary trees below:    a   a   a   a   /   /     \   \  b   b       b   b /     \     /     \c       c   c       cAll of these trees have the same pre-order and post-order traversals. This phenomenon is not restricted to binary trees, but holds for general m-ary trees as well.
+输入
+Input will consist of multiple problem instances. Each instance will consist of a line of the formm s1 s2indicating that the trees are m-ary trees, s1 is the pre-order traversal and s2 is the post-order traversal.All traversal strings will consist of lowercase alphabetic characters. For all input instances, 1 <= m <= 20 and the length of s1 and s2 will be between 1 and 26 inclusive. If the length of s1 is k (which is the same as the length of s2, of course), the first k letters of the alphabet will be used in the strings. An input line of 0 will terminate the input.
+输出
+For each problem instance, you should output one line containing the number of possible trees which would result in the pre-order and post-order traversals for the instance. All output values will be within the range of a 32-bit signed integer. For each problem instance, you are guaranteed that there is at least one tree with the given pre-order and post-order traversals.
+样例输入
+2 abc cba
+2 abc bca
+10 abc bca
+13 abejkcfghid jkebfghicda
+0
+样例输出
+4
+1
+45
+207352860
+来源
+East Central North America 2002
+
+*/
+
+#include<iostream>
+#include<string>
+using namespace std;
+/*由前序遍历和后序遍历只能得到每个结点的儿子个数，然后根据排列组合可以得到可能情况*/
+string former,later;
+int round,total;//round是用来遍历前序遍历的序列的，保证每个结点的儿子个数都求一遍。
+int m;
+int c(int n,int m){
+	if(n>m-n)
+		n=m-n;
+	int i,k=m-n+1,ret=1;
+	for(i=0;i<n;i++)ret=ret*(k+i)/(i+1);
+	return ret;
+}
+void getson(int i,int j)
+{
+	if(i>j)return;
+	int temp,sons=0;
+	for(temp=i;temp<=j;temp++)
+	{
+		if(later[temp]==former[round])//在后序中找到了前序中相应的结点，是上一个节点的儿子
+		{
+			sons++;//儿子数加一个
+			round++;//找下一个节点的儿子
+			getson(i,temp-1);//后序遍历中，左边的是当前节点的儿子，递归计算
+			i=temp+1;//继续看后序中右边的部分，找下一个儿子
+		}
+
+	}
+	total*=c(sons,m);
+}
+int main()
+{
+	while(1)
+	{
+		cin>>m;
+		if(m==0)
+		{
+			break;
+		}
+		cin>>former>>later;
+		round=1;
+		total=1;
+		getson(0,former.length()-2);//去掉根结点，开始递归求儿子个数，并计算可能的排列方式
+		cout<<total<<endl;
+	}
+	return 0;
+}
+

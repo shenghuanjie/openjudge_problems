@@ -1,1 +1,165 @@
-b'/*\n2951: \xe6\xb5\xae\xe7\x82\xb9\xe6\x95\xb0\xe6\xb1\x82\xe9\xab\x98\xe7\xb2\xbe\xe5\xba\xa6\xe5\xb9\x82\nhttp://bailian.openjudge.cn/practice/2951/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\n\xe6\x9c\x89\xe4\xb8\x80\xe4\xb8\xaa\xe5\xae\x9e\xe6\x95\xb0 R ( 0.0 < R < 99.999 ) ,\xe8\xa6\x81\xe6\xb1\x82\xe5\x86\x99\xe7\xa8\x8b\xe5\xba\x8f\xe7\xb2\xbe\xe7\xa1\xae\xe8\xae\xa1\xe7\xae\x97 R \xe7\x9a\x84 n \xe6\xac\xa1\xe6\x96\xb9\xe3\x80\x82n \xe6\x98\xaf\xe6\x95\xb4\xe6\x95\xb0\xe5\xb9\xb6\xe4\xb8\x94 0 < n <= 25\xe3\x80\x82 \n\xe8\xbe\x93\xe5\x85\xa5\nT\xe8\xbe\x93\xe5\x85\xa5\xe5\x8c\x85\xe6\x8b\xac\xe5\xa4\x9a\xe7\xbb\x84 R \xe5\x92\x8c n\xe3\x80\x82 R \xe7\x9a\x84\xe5\x80\xbc\xe5\x8d\xa0\xe7\xac\xac 1 \xe5\x88\xb0 \xe7\xac\xac 6 \xe5\x88\x97,  n \xe7\x9a\x84\xe5\x80\xbc\xe5\x8d\xa0\xe7\xac\xac 8 \xe5\x92\x8c\xe7\xac\xac 9 \xe5\x88\x97\xe3\x80\x82\n\xe8\xbe\x93\xe5\x87\xba\n\xe5\xaf\xb9\xe4\xba\x8e\xe6\xaf\x8f\xe7\xbb\x84\xe8\xbe\x93\xe5\x85\xa5\xef\xbc\x8c\xe8\xa6\x81\xe6\xb1\x82\xe8\xbe\x93\xe5\x87\xba\xe4\xb8\x80\xe8\xa1\x8c\xef\xbc\x8c\xe8\xaf\xa5\xe8\xa1\x8c\xe5\x8c\x85\xe5\x90\xab\xe7\xb2\xbe\xe7\xa1\xae\xe7\x9a\x84 R \xe7\x9a\x84 n \xe6\xac\xa1\xe6\x96\xb9\xe3\x80\x82\xe8\xbe\x93\xe5\x87\xba\xe9\x9c\x80\xe8\xa6\x81\xe5\x8e\xbb\xe6\x8e\x89\xe5\x89\x8d\xe5\xaf\xbc\xe7\x9a\x84 0 \xe5\x90\x8e\xe5\x90\x8e\xe9\x9d\xa2\xe4\xb8\x8d\xe4\xb8\x8d\xe8\xa6\x81\xe7\x9a\x84 0 \xe3\x80\x82\xe5\xa6\x82\xe6\x9e\x9c\xe8\xbe\x93\xe5\x87\xba\xe6\x98\xaf\xe6\x95\xb4\xe6\x95\xb0\xef\xbc\x8c\xe4\xb8\x8d\xe8\xa6\x81\xe8\xbe\x93\xe5\x87\xba\xe5\xb0\x8f\xe6\x95\xb0\xe7\x82\xb9\xe3\x80\x82\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n95.123 12\r\n0.4321 20\r\n5.1234 15\r\n6.7592  9\r\n98.999 10\r\n1.0100 12\r\n\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n548815620517731830194541.899025343415715973535967221869852721\r\n.00000005148554641076956121994511276767154838481760200726351203835429763013462401\r\n43992025569.928573701266488041146654993318703707511666295476720493953024\r\n29448126.764121021618164430206909037173276672\r\n90429072743629540498.107596019456651774561044010001\r\n1.126825030131969720661201\r\n\n\xe6\x9d\xa5\xe6\xba\x90\nPOJ 1001\n\n*/\n\n#include<iostream>\nusing namespace std;\nint len;\nvoid multiple(int a[],int b[],int c[],int lx)//\xe5\xa4\xa7\xe6\x95\xb4\xe6\x95\xb0\xe4\xb9\x98\xe6\xb3\x95\n{\n\tfor(int i=0;i<len;i++)\n\t{\n\t\tfor(int j=0;j<lx;j++)\n\t\t{\n\t\t\tc[j+i]+=a[i]*b[j];\n\t\t\tif(c[j+i]>=10)\n\t\t\t{\n\t\t\t\tc[j+i+1]+=c[j+i]/10;\n\t\t\t\tc[j+i]%=10;\n\t\t\t}\n\t\t}\n\t}\n\n}\nvoid inter(char r[], int n)//\xe5\xa4\x84\xe7\x90\x86\xe8\xbe\x93\xe5\x85\xa5\xe6\x98\xaf\xe6\x95\xb4\xe6\x95\xb0\xe7\x9a\x84\xe6\x83\x85\xe5\x86\xb5\n{\n\tint i=0,use[520],x[2][520],j=0;//use\xe7\x94\xa8\xe4\xba\x8e\xe4\xbf\x9d\xe5\xad\x98\xe8\xbe\x93\xe5\x85\xa5\xe7\x9a\x84\xe6\xb5\xae\xe7\x82\xb9\xe6\x95\xb0\xe5\x8e\xbb\xe9\x99\xa4\xe5\xb0\x8f\xe6\x95\xb0\xe7\x82\xb9\xe5\x84\xbf\xe5\x90\x8e\xe7\x9a\x84\xe6\x95\xb0\xef\xbc\x8cx\xe7\x94\xa8\xe4\xba\x8e\xe4\xb9\x98\xe6\x96\xb9\xe8\xae\xa1\xe7\xae\x97\n\n\tmemset(x,0,sizeof(x));\n\tfor(i=len-1;i>=0;i--)\n\t{\n\t\tx[0][j]=r[i]-\'0\';\n\t\tuse[j]=x[0][j];\n\t\tj++;\n\t}\n\tint temp;\n\n\t\tfor(i=0;i<n-1;i++)\n\t\t{\n\t\t\ttemp=i%2;\n\n\t\t\tj=510;\n\t\t\twhile(x[temp][j]==0)j--;\n\t\t\tmemset(x[1-temp],0,sizeof(x[1-temp]));\n\t\t\tmultiple(use,x[temp],x[1-temp],j+1);\n\t\t}\n\t\tj=510;\n\t\t\n\t\twhile(x[1-temp][j]==0)j--;\n\t\tif(j==-1)cout<<"0";\n\t\tfor(;j>=0;j--)\n\t\t\tcout<<x[1-temp][j];\n\t\tcout<<endl;\n}\nint main()\n{\n\tshort n;//\xe6\x8c\x87\xe6\x95\xb0\n\tchar r[520];//\xe6\xb5\xae\xe7\x82\xb9\xe6\x95\xb0\n\twhile(cin>>r>>n)\n\t{\n\t\tint i=0;\n\t\tif(n==0){cout<<"1"<<endl;continue;}//\xe5\x81\x87\xe5\xa6\x82\xe6\x8c\x87\xe6\x95\xb0\xe4\xb8\xba0\xef\xbc\x8c\xe7\x9b\xb4\xe6\x8e\xa5\xe8\xbe\x93\xe5\x87\xba1\n\t\tif(n==1)//\xe6\x8c\x87\xe6\x95\xb0\xe4\xb8\xba1\xe8\xbe\x93\xe5\x87\xba\xe5\x8e\xbb\xe9\x99\xa4\xe5\xa4\x9a\xe4\xbd\x990\xe5\x90\x8e\xe7\x9a\x84\xe6\x95\xb0\n\t\t{\n\t\t\ti=strlen(r)-1;\n\t\t\twhile(r[i]==\'0\')r[i--]=\'\\0\';\n\t\t\tif(r[i]==\'.\')r[i]=\'\\0\';\n\t\t\tcout<<r<<endl;\n\t\t\tcontinue;\n\t\t}\n\t\tint use[520],x[2][520],dot=0,j=0;//use,x\xe5\x90\x8c\xe4\xb8\x8a\xef\xbc\x8cdot\xe7\x94\xa8\xe4\xba\x8e\xe8\xae\xb0\xe5\xbd\x95\xe5\xb0\x8f\xe6\x95\xb0\xe7\x82\xb9\xe5\x84\xbf\xe7\x9a\x84\xe4\xbd\x8d\xe7\xbd\xae\n\t\tmemset(x,0,sizeof(x));\n\t\tmemset(use,0,sizeof(use));\n\t\tlen=strlen(r)-1;\n\t\ti=len;\n\t\twhile(r[len]==\'0\')len--;//\xe6\x89\x94\xe6\x8e\x89\xe5\xa4\x9a\xe4\xbd\x99\xe7\x9a\x840\n\t\tif(r[len]==\'.\')//\xe5\x88\xa4\xe6\x96\xad\xe8\xbe\x93\xe5\x85\xa5\xe6\x98\xaf\xe5\x90\xa6\xe4\xb8\xba\xe6\x95\xb4\xe6\x95\xb0\n\t\t{\n\t\t\tinter(r,n);goto next;\n\t\t}\n\t\twhile(r[i]!=\'.\'&&i>-1)i--;\n\t\t\tif(i==-1)\n\t\t\t{\n\t\t\t\t\n\t\t\t\tlen++;\n\t\t\t\tinter(r,n);goto next;\n\t\t\t}\n\t\t//\xe5\xa4\x84\xe7\x90\x86\xe8\xbe\x93\xe5\x85\xa5\xe6\x98\xaf\xe5\xb0\x8f\xe6\x95\xb0\xe7\x9a\x84\xe6\x83\x85\xe5\x86\xb5\n\t\t\n\t\tfor(i=len;r[i]!=\'.\';i--)\n\t\t{\n\t\t\tx[0][j]=r[i]-\'0\';\n\t\t\tuse[j]=x[0][j];\n\t\t\tj++;\n\t\t\t\n\t\t}\n\t\tdot=j;\n\t\t\n\t\tfor(i-=1;i>=0;i--)\n\t\t{\n\t\t\tx[0][j]=r[i]-\'0\';\n\t\t\tuse[j]=x[0][j];\n\t\t\tj++;\n\t\t\t\n\t\t}\n\t\t\n\t\t\n         int temp;\n\n\t\t //\xe7\xae\x97n\xe6\xac\xa1\xe6\x96\xb9\xef\xbc\x8c\xe5\xb0\x86\xe4\xb9\x8b\xe5\x89\x8d\xe7\x9a\x84\xe7\xbb\x93\xe6\x9e\x9c\xe4\xbf\x9d\xe5\xad\x98\xe5\x9c\xa8x[1-temp]\xe4\xb8\xad\xef\xbc\x8c\xe7\x84\xb6\xe5\x90\x8e\xe6\xaf\x8f\xe6\xac\xa1\xe9\x83\xbd\xe4\xba\xa4\xe6\x8d\xa2\xe5\xad\x98\xe5\x82\xa8\xe7\xbb\x93\xe6\x9e\x9c\xe7\x9a\x84\xe4\xbd\x8d\xe7\xbd\xae\xef\xbc\x8c\xe8\x80\x8c\xe5\x89\x8d\xe4\xb8\x80\xe6\xac\xa1\xe7\x9a\x84\xe7\xbb\x93\xe6\x9e\x9c\xe4\xbe\xbf\xe4\xbd\x9c\xe4\xb8\xba\xe5\x90\x8e\xe4\xb8\x80\xe6\xac\xa1\xe7\x9a\x84\xe4\xb9\x98\xe6\x95\xb0\n\t\tfor(i=0;i<n-1;i++)\n\t\t{\n\t\t\ttemp=i%2;\n\t\t\tj=510;\n\t\t\twhile(x[temp][j]==0)j--;\n\t\t\tmemset(x[1-temp],0,sizeof(x[1-temp]));\n\t\t\tmultiple(use,x[temp],x[1-temp],j+1);\n\t\t}\n\t\tj=510;\n\t\t//\xe8\xbe\x93\xe5\x87\xba\n\t\twhile(j>=dot*n&&x[1-temp][j]==0)j--;\n\t\t//if(j<dot*n)cout<<"0";\xe8\x8b\xa5\xe6\x95\xb4\xe6\x95\xb0\xe9\x83\xa8\xe5\x88\x86\xe4\xb8\xba0\xe8\xb2\x8c\xe4\xbc\xbc\xe7\x9b\xb4\xe6\x8e\xa5\xe8\xbe\x93\xe5\x87\xba\xe5\xb0\x8f\xe6\x95\xb0\xe7\x82\xb9\xe5\x84\xbf\n\t\tfor(;j>=dot*n;j--)\n\t\t\tcout<<x[1-temp][j];\n\t\tcout<<".";\n\t\ti=0;\n\t\twhile(x[1-temp][i]==0)i++;\n\t\twhile(j>=i)\n\t\t{\n\t\t\tcout<<x[1-temp][j--];\n\t\t}\n\t\tcout<<endl;\nnext:;\n\n\t}\n\n\treturn 0;\n}'
+/*
+2951: 浮点数求高精度幂
+http://bailian.openjudge.cn/practice/2951/
+
+
+描述
+有一个实数 R ( 0.0 < R < 99.999 ) ,要求写程序精确计算 R 的 n 次方。n 是整数并且 0 < n <= 25。 
+输入
+T输入包括多组 R 和 n。 R 的值占第 1 到 第 6 列,  n 的值占第 8 和第 9 列。
+输出
+对于每组输入，要求输出一行，该行包含精确的 R 的 n 次方。输出需要去掉前导的 0 后后面不不要的 0 。如果输出是整数，不要输出小数点。
+样例输入
+95.123 12
+0.4321 20
+5.1234 15
+6.7592  9
+98.999 10
+1.0100 12
+
+样例输出
+548815620517731830194541.899025343415715973535967221869852721
+.00000005148554641076956121994511276767154838481760200726351203835429763013462401
+43992025569.928573701266488041146654993318703707511666295476720493953024
+29448126.764121021618164430206909037173276672
+90429072743629540498.107596019456651774561044010001
+1.126825030131969720661201
+
+来源
+POJ 1001
+
+*/
+
+#include<iostream>
+using namespace std;
+int len;
+void multiple(int a[],int b[],int c[],int lx)//大整数乘法
+{
+	for(int i=0;i<len;i++)
+	{
+		for(int j=0;j<lx;j++)
+		{
+			c[j+i]+=a[i]*b[j];
+			if(c[j+i]>=10)
+			{
+				c[j+i+1]+=c[j+i]/10;
+				c[j+i]%=10;
+			}
+		}
+	}
+
+}
+void inter(char r[], int n)//处理输入是整数的情况
+{
+	int i=0,use[520],x[2][520],j=0;//use用于保存输入的浮点数去除小数点儿后的数，x用于乘方计算
+
+	memset(x,0,sizeof(x));
+	for(i=len-1;i>=0;i--)
+	{
+		x[0][j]=r[i]-'0';
+		use[j]=x[0][j];
+		j++;
+	}
+	int temp;
+
+		for(i=0;i<n-1;i++)
+		{
+			temp=i%2;
+
+			j=510;
+			while(x[temp][j]==0)j--;
+			memset(x[1-temp],0,sizeof(x[1-temp]));
+			multiple(use,x[temp],x[1-temp],j+1);
+		}
+		j=510;
+		
+		while(x[1-temp][j]==0)j--;
+		if(j==-1)cout<<"0";
+		for(;j>=0;j--)
+			cout<<x[1-temp][j];
+		cout<<endl;
+}
+int main()
+{
+	short n;//指数
+	char r[520];//浮点数
+	while(cin>>r>>n)
+	{
+		int i=0;
+		if(n==0){cout<<"1"<<endl;continue;}//假如指数为0，直接输出1
+		if(n==1)//指数为1输出去除多余0后的数
+		{
+			i=strlen(r)-1;
+			while(r[i]=='0')r[i--]='\0';
+			if(r[i]=='.')r[i]='\0';
+			cout<<r<<endl;
+			continue;
+		}
+		int use[520],x[2][520],dot=0,j=0;//use,x同上，dot用于记录小数点儿的位置
+		memset(x,0,sizeof(x));
+		memset(use,0,sizeof(use));
+		len=strlen(r)-1;
+		i=len;
+		while(r[len]=='0')len--;//扔掉多余的0
+		if(r[len]=='.')//判断输入是否为整数
+		{
+			inter(r,n);goto next;
+		}
+		while(r[i]!='.'&&i>-1)i--;
+			if(i==-1)
+			{
+				
+				len++;
+				inter(r,n);goto next;
+			}
+		//处理输入是小数的情况
+		
+		for(i=len;r[i]!='.';i--)
+		{
+			x[0][j]=r[i]-'0';
+			use[j]=x[0][j];
+			j++;
+			
+		}
+		dot=j;
+		
+		for(i-=1;i>=0;i--)
+		{
+			x[0][j]=r[i]-'0';
+			use[j]=x[0][j];
+			j++;
+			
+		}
+		
+		
+         int temp;
+
+		 //算n次方，将之前的结果保存在x[1-temp]中，然后每次都交换存储结果的位置，而前一次的结果便作为后一次的乘数
+		for(i=0;i<n-1;i++)
+		{
+			temp=i%2;
+			j=510;
+			while(x[temp][j]==0)j--;
+			memset(x[1-temp],0,sizeof(x[1-temp]));
+			multiple(use,x[temp],x[1-temp],j+1);
+		}
+		j=510;
+		//输出
+		while(j>=dot*n&&x[1-temp][j]==0)j--;
+		//if(j<dot*n)cout<<"0";若整数部分为0貌似直接输出小数点儿
+		for(;j>=dot*n;j--)
+			cout<<x[1-temp][j];
+		cout<<".";
+		i=0;
+		while(x[1-temp][i]==0)i++;
+		while(j>=i)
+		{
+			cout<<x[1-temp][j--];
+		}
+		cout<<endl;
+next:;
+
+	}
+
+	return 0;
+}

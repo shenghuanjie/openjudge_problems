@@ -1,1 +1,24 @@
-b'/*\n3947: F\nhttp://pkuteam.openjudge.cn/acm_icpc/3947/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\n\n\xe8\xbe\x93\xe5\x85\xa5\n\n\xe8\xbe\x93\xe5\x87\xba\n\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n\n\n*/\n\n#include<iostream>\nusing namespace std;\nint main()\n{\n\treturn 0;\n}'
+/*
+3947: F
+http://pkuteam.openjudge.cn/acm_icpc/3947/
+
+
+描述
+
+输入
+
+输出
+
+样例输入
+
+样例输出
+
+
+*/
+
+#include<iostream>
+using namespace std;
+int main()
+{
+	return 0;
+}

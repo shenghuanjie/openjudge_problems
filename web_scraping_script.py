@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
-import IPython
 
 
 code_folder = 'problems'
@@ -52,14 +51,15 @@ def retrieve_codes(url):
                          question_block + "\n*/\n\n" + \
                          code_block
             with open(save_file, "w") as f:
-                print(code_block.encode('utf-8'), file=f)
+                print(code_block, file=f)
             problem_set.add(title.text)
 
 
 retrieve_codes(user_url)
+print("page 1 is done")
 for ipage in range(2, 13):
     newurl = user_url + '/?page=' + str(ipage)
     retrieve_codes(newurl)
-
+    print("page " + str(ipage) + " is done")
 
 

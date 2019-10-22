@@ -1,1 +1,88 @@
-b'/*\n3180: \xe6\x95\xb4\xe6\x95\xb0\xe5\x87\x8f\xe6\xb3\x95\nhttp://bailian.openjudge.cn/practice/3180/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\n\xe4\xb8\xa4\xe4\xb8\xaa\xe5\x8d\x81\xe8\xbf\x9b\xe5\x88\xb6\xe9\x9d\x9e\xe8\xb4\x9f\xe6\x95\xb4\xe6\x95\xb0M\xe5\x92\x8cN\xef\xbc\x8c\xe8\xae\xa1\xe7\xae\x97\xe4\xba\x8c\xe8\x80\x85\xe7\x9a\x84\xe5\xb7\xae\xef\xbc\x8c\xe6\x97\xa2M-N\xe3\x80\x82M\xe3\x80\x81N\xe6\x9c\x80\xe5\xa4\x9a\xe5\x8f\xaf\xe4\xbb\xa5\xe6\x98\xaf\xe9\x95\xbf\xe5\xba\xa6\xe4\xb8\xba200\xe4\xbd\x8d\xe7\x9a\x84\xe6\x95\xb4\xe6\x95\xb0\xe3\x80\x82\n\xe8\xbe\x93\xe5\x85\xa5\n\xe5\xa4\x9a\xe7\xbb\x84\xe6\x95\xb0\xe6\x8d\xae\xef\xbc\x8c\xe6\xaf\x8f\xe7\xbb\x84\xe6\x95\xb0\xe6\x8d\xae\xe5\x85\x88\xe6\x98\xaf\xe4\xb8\x80\xe8\xa1\x8c\xe8\xa1\xa8\xe7\xa4\xbaM\xef\xbc\x8c\xe7\x84\xb6\xe5\x90\x8e\xe4\xb8\x80\xe8\xa1\x8c\xe8\xa1\xa8\xe7\xa4\xbaN\xe3\x80\x82M\xe5\x92\x8cN\xe5\xbc\x80\xe5\xa4\xb4\xe5\x9d\x87\xe6\x97\xa0\xe5\x86\x97\xe4\xbd\x99\xe7\x9a\x840\xe3\x80\x82\n\xe8\xbe\x93\xe5\x87\xba\n\xe6\xaf\x8f\xe8\xa1\x8c\xe4\xb8\x80\xe4\xb8\xaa\xe6\x95\xb0\xef\xbc\x8c\xe8\xa1\xa8\xe7\xa4\xbaM-N\xef\xbc\x8c\xe5\xbc\x80\xe5\xa4\xb4\xe4\xb8\x8d\xe8\x83\xbd\xe6\x9c\x89\xe5\x86\x97\xe4\xbd\x99\xe7\x9a\x840\xef\xbc\x8c\xe6\x97\xa2\xe4\xb8\x8d\xe8\x83\xbd\xe8\xbe\x93\xe5\x87\xba05\xe8\xbf\x99\xe6\xa0\xb7\xe7\x9a\x84\xe6\x95\xb0\xef\xbc\x8c\xe8\x80\x8c\xe5\xba\x94\xe8\xaf\xa5\xe7\x9b\xb4\xe6\x8e\xa5\xe8\xbe\x93\xe5\x87\xba5\xe3\x80\x82\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n9999\r\n4567\r\n0\r\n1\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n5432\r\n-1\n\n*/\n\n#include<iostream>\nusing namespace std;\nbool judge(char a[],char b[])\n{\n\tif(strlen(a)>strlen(b))\n\t\treturn false;\n\telse if(strlen(a)<strlen(b))\n\t{\n\t\tchar temp[301];\n\t\tstrcpy(temp,a);\n\t\tstrcpy(a,b);\n\t\tstrcpy(b,temp);\n\t\treturn true;\n\t}\n\telse \n\t{\n\t\tint i=0,la=strlen(a);\n\t\twhile(i<la&&a[i]==b[i])i++;\n\t\tif(!(i<la))return false;\n\t\telse\n\t\t{\n\t\t\tif(a[i]>b[i])return false;\n\t\t\telse if(a[i]<b[i])\n\t\t\t{\n\t\t\t\tchar temp[301];\n\t\tstrcpy(temp,a);\n\t\tstrcpy(a,b);\n\t\tstrcpy(b,temp);\n\t\treturn true;\n\t\t\t}\n\t\t}\n\t}\n}\nint main()\n{\n\tchar a[301],b[301];\n\tbool fu;\n\tint i,a1[301],b1[301],j=0;\n\twhile(cin>>a>>b)\n\t{\n\t\tj=0;\n\t\tfu=judge(a,b);\n\tmemset(a1,0,sizeof(a1));\n\tmemset(b1,0,sizeof(b1));\n\tfor(i=strlen(a)-1;i>=0;i--)\n\t\ta1[j++]=(int)a[i]-48;\n\tj=0;\n\tfor(i=strlen(b)-1;i>=0;i--)\n\t\tb1[j++]=(int)b[i]-48;\n\tj=0;\n\tfor(i=0;i<201;i++)\n\t{\n\t\ta1[i]=a1[i]-b1[i];\n\t\tif(a1[i]<0)\n\t\t{a1[i+1]--;a1[i]+=10;}\n\t}\n\ti=202;\n\twhile(a1[i]==0)i--;\n\tif(i>=0&&fu)cout<<"-";\n\tif(i<0)cout<<"0";\n\tfor(;i>=0;i--)\n\t\tcout<<a1[i];\n\tcout<<endl;\n\t}\n\treturn 0;\n}'
+/*
+3180: 整数减法
+http://bailian.openjudge.cn/practice/3180/
+
+
+描述
+两个十进制非负整数M和N，计算二者的差，既M-N。M、N最多可以是长度为200位的整数。
+输入
+多组数据，每组数据先是一行表示M，然后一行表示N。M和N开头均无冗余的0。
+输出
+每行一个数，表示M-N，开头不能有冗余的0，既不能输出05这样的数，而应该直接输出5。
+样例输入
+9999
+4567
+0
+1
+样例输出
+5432
+-1
+
+*/
+
+#include<iostream>
+using namespace std;
+bool judge(char a[],char b[])
+{
+	if(strlen(a)>strlen(b))
+		return false;
+	else if(strlen(a)<strlen(b))
+	{
+		char temp[301];
+		strcpy(temp,a);
+		strcpy(a,b);
+		strcpy(b,temp);
+		return true;
+	}
+	else 
+	{
+		int i=0,la=strlen(a);
+		while(i<la&&a[i]==b[i])i++;
+		if(!(i<la))return false;
+		else
+		{
+			if(a[i]>b[i])return false;
+			else if(a[i]<b[i])
+			{
+				char temp[301];
+		strcpy(temp,a);
+		strcpy(a,b);
+		strcpy(b,temp);
+		return true;
+			}
+		}
+	}
+}
+int main()
+{
+	char a[301],b[301];
+	bool fu;
+	int i,a1[301],b1[301],j=0;
+	while(cin>>a>>b)
+	{
+		j=0;
+		fu=judge(a,b);
+	memset(a1,0,sizeof(a1));
+	memset(b1,0,sizeof(b1));
+	for(i=strlen(a)-1;i>=0;i--)
+		a1[j++]=(int)a[i]-48;
+	j=0;
+	for(i=strlen(b)-1;i>=0;i--)
+		b1[j++]=(int)b[i]-48;
+	j=0;
+	for(i=0;i<201;i++)
+	{
+		a1[i]=a1[i]-b1[i];
+		if(a1[i]<0)
+		{a1[i+1]--;a1[i]+=10;}
+	}
+	i=202;
+	while(a1[i]==0)i--;
+	if(i>=0&&fu)cout<<"-";
+	if(i<0)cout<<"0";
+	for(;i>=0;i--)
+		cout<<a1[i];
+	cout<<endl;
+	}
+	return 0;
+}

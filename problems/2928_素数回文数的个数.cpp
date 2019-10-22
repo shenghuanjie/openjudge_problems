@@ -1,1 +1,75 @@
-b'/*\n2928: \xe7\xb4\xa0\xe6\x95\xb0\xe5\x9b\x9e\xe6\x96\x87\xe6\x95\xb0\xe7\x9a\x84\xe4\xb8\xaa\xe6\x95\xb0\nhttp://bailian.openjudge.cn/practice/2928/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\n\xe6\xb1\x8211\xe5\x88\xb0n\xe4\xb9\x8b\xe9\x97\xb4\xef\xbc\x88\xe5\x8c\x85\xe6\x8b\xacn\xef\xbc\x89\xef\xbc\x8c\xe6\x97\xa2\xe6\x98\xaf\xe7\xb4\xa0\xe6\x95\xb0\xe5\x8f\x88\xe6\x98\xaf\xe5\x9b\x9e\xe6\x96\x87\xe6\x95\xb0\xe7\x9a\x84\xe6\x95\xb4\xe6\x95\xb0\xe6\x9c\x89\xe5\xa4\x9a\xe5\xb0\x91\xe4\xb8\xaa\xe3\x80\x82\n\xe8\xbe\x93\xe5\x85\xa5\n\xe4\xb8\x80\xe4\xb8\xaa\xe5\xa4\xa7\xe4\xba\x8e11\xe5\xb0\x8f\xe4\xba\x8e1000\xe7\x9a\x84\xe6\x95\xb4\xe6\x95\xb0n\xe3\x80\x82\n\xe8\xbe\x93\xe5\x87\xba\n11\xe5\x88\xb0n\xe4\xb9\x8b\xe9\x97\xb4\xe7\x9a\x84\xe7\xb4\xa0\xe6\x95\xb0\xe5\x9b\x9e\xe6\x96\x87\xe6\x95\xb0\xe4\xb8\xaa\xe6\x95\xb0\xe3\x80\x82\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n23\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n1\n\xe6\x8f\x90\xe7\xa4\xba\n\xe5\x9b\x9e\xe6\x96\x87\xe6\x95\xb0\xe6\x8c\x87\xe5\xb7\xa6\xe5\x8f\xb3\xe5\xaf\xb9\xe7\xa7\xb0\xe7\x9a\x84\xe6\x95\xb0\xef\xbc\x8c\xe5\xa6\x82\xef\xbc\x9a292\xef\xbc\x8c333\xe3\x80\x82\n\xe6\x9d\xa5\xe6\xba\x90\n06\xe8\xae\xa1\xe7\xae\x97\xe6\xa6\x82\xe8\xae\xba\xe8\xaf\xbe\n\n*/\n\n#include<iostream>\nusing namespace std;\nint main()\n{\n\tint i,x,su[200],huiwen[200],result[200],s=0,w=0,j,u=0,count=0;\n\tmemset(su,0,sizeof(su));\n\tmemset(huiwen,0,sizeof(huiwen));\n    for(i=2;i<1000;i++)\n\t{\n\t\tfor(j=2;j<i;j++)\n\t\t{\n\t\t\tif(i%j==0)\n\t\t\t\tbreak;\n\t\t}\n\t\tif(j==i)su[s++]=i;\n\t}\n\t//for(i=0;i<s;i++)cout<<su[i]<<endl;\n\tfor(i=10;i<1000;i++)\n\t{\n\t\tif((i/100)==0)\n\t\t{\n\t\t\tif((i/10)==(i%10))\n\t\t\t\thuiwen[w++]=i;\n\t\t}\n\t\tif(((i/100)!=0)&&((i/1000)==0))\n\t\t{\n\t\t\tif((i/100)==(i%10))\n\t\t\t\thuiwen[w++]=i;\n\t\t}\n\t}\n\tfor(i=0;i<s;i++)\n\t{\n\t\tfor(j=0;j<w;j++)\n\t\t{\n\t\t\tif(huiwen[j]==su[i])\n\t\t\t{result[u++]=su[i];break;}\n\t\t}\n\t}\n\t//for(i=0;i<u;i++)cout<<result[i]<<endl;\n\twhile(cin>>x)\n\t{\n\t\tcount=0;\n\t\tfor(i=0;i<u;i++)\n\t\t{\n\t\t\tif(result[i]<=x)\n\t\t\t\tcount++;\n\t\t\telse \n\t\t\t\tbreak;\n\t\t}\n\t\tcout<<count<<endl;\n\t}\n\treturn 0;\n}'
+/*
+2928: 素数回文数的个数
+http://bailian.openjudge.cn/practice/2928/
+
+
+描述
+求11到n之间（包括n），既是素数又是回文数的整数有多少个。
+输入
+一个大于11小于1000的整数n。
+输出
+11到n之间的素数回文数个数。
+样例输入
+23
+样例输出
+1
+提示
+回文数指左右对称的数，如：292，333。
+来源
+06计算概论课
+
+*/
+
+#include<iostream>
+using namespace std;
+int main()
+{
+	int i,x,su[200],huiwen[200],result[200],s=0,w=0,j,u=0,count=0;
+	memset(su,0,sizeof(su));
+	memset(huiwen,0,sizeof(huiwen));
+    for(i=2;i<1000;i++)
+	{
+		for(j=2;j<i;j++)
+		{
+			if(i%j==0)
+				break;
+		}
+		if(j==i)su[s++]=i;
+	}
+	//for(i=0;i<s;i++)cout<<su[i]<<endl;
+	for(i=10;i<1000;i++)
+	{
+		if((i/100)==0)
+		{
+			if((i/10)==(i%10))
+				huiwen[w++]=i;
+		}
+		if(((i/100)!=0)&&((i/1000)==0))
+		{
+			if((i/100)==(i%10))
+				huiwen[w++]=i;
+		}
+	}
+	for(i=0;i<s;i++)
+	{
+		for(j=0;j<w;j++)
+		{
+			if(huiwen[j]==su[i])
+			{result[u++]=su[i];break;}
+		}
+	}
+	//for(i=0;i<u;i++)cout<<result[i]<<endl;
+	while(cin>>x)
+	{
+		count=0;
+		for(i=0;i<u;i++)
+		{
+			if(result[i]<=x)
+				count++;
+			else 
+				break;
+		}
+		cout<<count<<endl;
+	}
+	return 0;
+}

@@ -1,1 +1,93 @@
-b"/*\n1979: Red and Black\nhttp://bailian.openjudge.cn/practice/1979/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\nThere is a rectangular room, covered with square tiles. Each tile is colored either red or black. A man is standing on a black tile. From a tile, he can move to one of four adjacent tiles. But he can't move on red tiles, he can move only on black tiles. Write a program to count the number of black tiles which he can reach by repeating the moves described above. \n\xe8\xbe\x93\xe5\x85\xa5\nThe input consists of multiple data sets. A data set starts with a line containing two positive integers W and H; W and H are the numbers of tiles in the x- and y- directions, respectively. W and H are not more than 20. There are H more lines in the data set, each of which includes W characters. Each character represents the color of a tile as follows. '.' - a black tile '#' - a red tile '@' - a man on a black tile(appears exactly once in a data set) The end of the input is indicated by a line consisting of two zeros. \n\xe8\xbe\x93\xe5\x87\xba\nFor each data set, your program should output a line which contains the number of tiles he can reach from the initial tile (including itself). \n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n6 9\r\n....#.\r\n.....#\r\n......\r\n......\r\n......\r\n......\r\n......\r\n#@...#\r\n.#..#.\r\n11 9\r\n.#.........\r\n.#.#######.\r\n.#.#.....#.\r\n.#.#.###.#.\r\n.#.#..@#.#.\r\n.#.#####.#.\r\n.#.......#.\r\n.#########.\r\n...........\r\n11 6\r\n..#..#..#..\r\n..#..#..#..\r\n..#..#..###\r\n..#..#..#@.\r\n..#..#..#..\r\n..#..#..#..\r\n7 7\r\n..#.#..\r\n..#.#..\r\n###.###\r\n...@...\r\n###.###\r\n..#.#..\r\n..#.#..\r\n0 0\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n45\r\n59\r\n6\r\n13\r\n\n\xe6\x9d\xa5\xe6\xba\x90\nJapan 2004 Domestic\n\n*/\n\n#include<iostream>\nusing namespace std;\nchar floor[25][25];\nint hang,lie;\nint f(int x,int y)\n{\n\tif(x<0||x==hang||y<0||y==lie)return 0;\n\telse if(floor[x][y]=='#')return 0;\n\telse \n\t{\n\t\tfloor[x][y]='#';\n\t\treturn (1+f(x-1,y)+f(x+1,y)+f(x,y+1)+f(x,y-1));\n\t}\n}\nint main()\n{\n\tint x,y;\n\twhile(cin>>lie>>hang)\n\t{\n\tif(hang==0&&lie==0)return 0;\n\tfor(int i=0;i<hang;i++)\n\t{\n\t\t\tcin>>floor[i];\n\t\t\tfor(int j=0;j<lie;j++)\n\t\t\t{\n\t\t\t\tif(floor[i][j]=='@')\n\t\t\t\t{\n\t\t\t\t\tx=i;y=j;\n\t\t\t\t}\n\t\t\t}\n\t}\n\tcout<<f(x,y)<<endl;\n\t}\n}"
+/*
+1979: Red and Black
+http://bailian.openjudge.cn/practice/1979/
+
+
+描述
+There is a rectangular room, covered with square tiles. Each tile is colored either red or black. A man is standing on a black tile. From a tile, he can move to one of four adjacent tiles. But he can't move on red tiles, he can move only on black tiles. Write a program to count the number of black tiles which he can reach by repeating the moves described above. 
+输入
+The input consists of multiple data sets. A data set starts with a line containing two positive integers W and H; W and H are the numbers of tiles in the x- and y- directions, respectively. W and H are not more than 20. There are H more lines in the data set, each of which includes W characters. Each character represents the color of a tile as follows. '.' - a black tile '#' - a red tile '@' - a man on a black tile(appears exactly once in a data set) The end of the input is indicated by a line consisting of two zeros. 
+输出
+For each data set, your program should output a line which contains the number of tiles he can reach from the initial tile (including itself). 
+样例输入
+6 9
+....#.
+.....#
+......
+......
+......
+......
+......
+#@...#
+.#..#.
+11 9
+.#.........
+.#.#######.
+.#.#.....#.
+.#.#.###.#.
+.#.#..@#.#.
+.#.#####.#.
+.#.......#.
+.#########.
+...........
+11 6
+..#..#..#..
+..#..#..#..
+..#..#..###
+..#..#..#@.
+..#..#..#..
+..#..#..#..
+7 7
+..#.#..
+..#.#..
+###.###
+...@...
+###.###
+..#.#..
+..#.#..
+0 0
+样例输出
+45
+59
+6
+13
+
+来源
+Japan 2004 Domestic
+
+*/
+
+#include<iostream>
+using namespace std;
+char floor[25][25];
+int hang,lie;
+int f(int x,int y)
+{
+	if(x<0||x==hang||y<0||y==lie)return 0;
+	else if(floor[x][y]=='#')return 0;
+	else 
+	{
+		floor[x][y]='#';
+		return (1+f(x-1,y)+f(x+1,y)+f(x,y+1)+f(x,y-1));
+	}
+}
+int main()
+{
+	int x,y;
+	while(cin>>lie>>hang)
+	{
+	if(hang==0&&lie==0)return 0;
+	for(int i=0;i<hang;i++)
+	{
+			cin>>floor[i];
+			for(int j=0;j<lie;j++)
+			{
+				if(floor[i][j]=='@')
+				{
+					x=i;y=j;
+				}
+			}
+	}
+	cout<<f(x,y)<<endl;
+	}
+}

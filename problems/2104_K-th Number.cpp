@@ -1,1 +1,163 @@
-b'/*\n2104: K-th Number\nhttp://bailian.openjudge.cn/practice/2104/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\nYou are working for Macrohard company in data structures department. After failing your previous task about key insertion you were asked to write a new data structure that would be able to return quickly k-th order statistics in the array segment. That is, given an array a[1...n] of different integer numbers, your program must answer a series of questions Q(i, j, k) in the form: "What would be the k-th number in a[i...j] segment, if this segment was sorted?" For example, consider the array a = (1, 5, 2, 6, 3, 7, 4). Let the question be Q(2, 5, 3). The segment a[2...5] is (5, 2, 6, 3). If we sort this segment, we get (2, 3, 5, 6), the third number is 5, and therefore the answer to the question is 5. \n\xe8\xbe\x93\xe5\x85\xa5\nThe first line of the input file contains n --- the size of the array, and m --- the number of questions to answer (1 <= n <= 100 000, 1 <= m <= 5 000). The second line contains n different integer numbers not exceeding 109 by their absolute values --- the array for which the answers should be given. The following m lines contain question descriptions, each description consists of three numbers: i, j, and k (1 <= i <= j <= n, 1 <= k <= j - i + 1) and represents the question Q(i, j, k). \n\xe8\xbe\x93\xe5\x87\xba\nFor each question output the answer to it --- the k-th number in sorted a[i...j] segment. \n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n7 3\r\n1 5 2 6 3 7 4\r\n2 5 3\r\n4 4 1\r\n1 7 3\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n5\r\n6\r\n3\n\xe6\x8f\x90\xe7\xa4\xba\nThis problem has huge input,so please use c-style input(scanf,printf),or you may got time limit exceed.\n\xe6\x9d\xa5\xe6\xba\x90\nNortheastern Europe 2004, Northern Subregion\n\n*/\n\n#include<iostream>\n#include"stdio.h"\nusing namespace std;\n#define degree 20\n#define len 100010\nint MergeTree[degree][len]={0};//\xe5\xbd\x92\xe5\xb9\xb6\xe6\xa0\x91\xef\xbc\x8c\xe8\xae\xb0\xe5\xbd\x95\xe7\x9a\x84\xe6\x98\xaf\xe5\xbd\x92\xe5\xb9\xb6\xe6\x8e\x92\xe5\xba\x8f\xe4\xb8\xad\xe7\xbb\x93\xe6\x9e\x9c\xe7\x9a\x84\xe9\x83\xa8\xe5\x88\x86\nint record[len]={0};\n/*\xe7\xae\x80\xe5\x8d\x95\xe8\xa7\xa3\xe9\x87\x8a\xef\xbc\x9a\xe4\xba\x8c\xe5\x88\x86+\xe5\xbd\x92\xe5\xb9\xb6\xe6\x8e\x92\xe5\xba\x8f+\xe7\xba\xbf\xe6\xae\xb5\xe6\xa0\x91+\xe4\xba\x8c\xe5\x88\x86\n\n\xe9\xa6\x96\xe5\x85\x88\xe5\xbb\xba\xe6\xa0\x91\xef\xbc\x9a\xe6\x8c\x89\xe7\x85\xa7\xe5\xbd\x92\xe5\xb9\xb6\xe6\x8e\x92\xe5\xba\x8f\xe7\x9a\x84\xe8\xbf\x87\xe7\xa8\x8b\xef\xbc\x8c\xe5\x85\x88\xe8\xb5\xb0\xe5\x88\xb0\xe5\xba\x95\xef\xbc\x8c\xe7\x84\xb6\xe5\x90\x8e\xe5\xb0\x86\xe8\xaf\xa5\xe5\xb1\x82\xef\xbc\x88deep\xef\xbc\x89[l...r]\xe5\xbd\x92\xe5\xb9\xb6\xe5\x90\x8e\xe5\xbe\x97\xe5\x88\xb0\xe7\x9a\x84\xe6\x95\xb0\xe6\x8d\xae\xe5\xad\x98\xe5\x88\xb0seq[deep][l...r]\xe4\xb8\xad\xe5\x8e\xbb\xef\xbc\x8c\xe5\x88\x99\xe8\xbf\x99\xe4\xb8\x80\xe5\xb0\x8f\xe6\xae\xb5\xe5\xa7\x8b\xe7\xbb\x88\xe6\x98\xaf\xe6\x9c\x89\xe5\xba\x8f\xe7\x9a\x84\xe3\x80\x82\xe3\x80\x82\xe3\x80\x82\xe3\x80\x82\xe5\x8f\xaf\xe4\xbb\xa5\xe6\x83\xb3\xe8\xb1\xa1\xef\xbc\x8c\xe6\x9c\x80\xe4\xb8\x8a\xe5\xb1\x82\xe6\x98\xaf\xe6\x8e\x92\xe5\xa5\xbd\xe5\xba\x8f\xe7\x9a\x84\xe6\x95\xb0\xe7\xbb\x84\xef\xbc\x8c\xe6\x89\x80\xe6\x9c\x89\xe5\x8f\xb6\xe5\xad\x90\xe8\x8a\x82\xe7\x82\xb9\xe7\xbb\x84\xe5\x90\x88\xe8\xb5\xb7\xe6\x9d\xa5\xe5\xb0\xb1\xe6\x98\xaf\xe5\x8e\x9f\xe6\x95\xb0\xe7\xbb\x84\xe3\x80\x82\xe3\x80\x82\xe3\x80\x82\n\n\xe6\x9f\xa5\xe8\xaf\xa2\xe5\x88\x86\xe4\xb8\x89\xe4\xb8\xaa\xe6\xad\xa5\xe9\xaa\xa4\xef\xbc\x9a1\xe6\x98\xaf\xe5\x9c\xa8\xe6\x9c\x80\xe4\xb8\x8a\xe5\xb1\x82\xe4\xba\x8c\xe5\x88\x86\xe9\x80\x89\xe5\x8f\x96\xe4\xb8\x80\xe4\xb8\xaa\xe5\x85\x83\xe7\xb4\xa0key\xef\xbc\x8c\xe6\x9f\xa5\xe8\xaf\xa2key\xe5\x9c\xa8[l, r]\xe4\xb8\xad\xe5\xa4\xa7\xe4\xba\x8e\xe5\x87\xa0\xe4\xb8\xaa\xe6\x95\xb0num\xef\xbc\x8c\xe5\x8f\x96\xe5\xbe\x97\xe4\xb8\x80\xe4\xb8\xaa\xe6\x9c\x80\xe5\xb0\x8f\xe7\x9a\x84num>=k\xe7\x9a\x84\xe9\x82\xa3\xe4\xb8\xaa\xef\xbc\x8c\xe5\x88\x99\xe4\xb8\xba\xe6\x89\x80\xe6\xb1\x82\xef\xbc\x8c\xe9\x80\x9a\xe8\xbf\x87\xe7\xba\xbf\xe6\xae\xb5\xe6\xa0\x91\xe5\x8e\xbb\xe6\x9f\xa5\xe8\xaf\xa2key\xe5\x9c\xa8[l, r]\xe4\xb8\xad\xe5\xa4\xa7\xe4\xba\x8e\xe5\x87\xa0\xe4\xb8\xaa\xe6\x95\xb0num\xef\xbc\x8c\xe5\x88\xb0\xe4\xba\x86\xe7\xac\xa6\xe5\x90\x88\xe7\x9a\x84\xe5\x8c\xba\xe9\x97\xb4\xe5\x90\x8e\xe5\xb0\xb1\xe5\x8f\xaf\xe4\xbb\xa5\xe9\x80\x9a\xe8\xbf\x87\xe4\xba\x8c\xe5\x88\x86\xe6\x9d\xa5\xe6\xb1\x82\xe5\xbe\x97\xe5\x85\xb6\xe5\x9c\xa8\xe6\x9c\xac\xe5\x8c\xba\xe9\x97\xb4\xe5\xa4\xa7\xe4\xba\x8e\xe5\x87\xa0\xe4\xb8\xaa\xe6\x95\xb0\xe3\x80\x82\xe3\x80\x82\xe3\x80\x82\xe8\xb2\x8c\xe4\xbc\xbc\xe8\xaf\xb4\xe4\xb8\x8d\xe6\xb8\x85\xe6\xa5\x9a\xe4\xba\x86\xe3\x80\x82\xe3\x80\x82*/\nstruct//\xe7\xba\xbf\xe6\xae\xb5\xe6\xa0\x91\xef\xbc\x8c\xe8\xae\xb0\xe5\xbd\x95\xe7\x9a\x84\xe6\x98\xaf\xe5\xbd\x92\xe5\xb9\xb6\xe6\x8e\x92\xe5\xba\x8f\xe4\xb8\xad\xe5\x88\x92\xe5\x88\x86\xe7\x9a\x84\xe8\xbf\x87\xe7\xa8\x8b\n{\n\tint left; int right; int middle;\n}LinearTree[len*4];\n\nvoid Merge(int *data,int left,int right,int middle,int deep)\n{\n\t//cout<<"Deep: "<<deep<<endl;\n\tint i,j,p1,p2;\n\tfor(i=left;i<=right;i++)\n\t\tMergeTree[deep][i]=data[i];\n\tp1=left;p2=middle+1;\n\ti=left;\n\twhile(p1<=middle&&p2<=right)\n\t{\n\t\tif(MergeTree[deep][p1]>MergeTree[deep][p2])\n\t\t\tdata[i++]=MergeTree[deep][p2++];\n\t\telse\n\t\t\tdata[i++]=MergeTree[deep][p1++];\n\t}\n\twhile(p1<=middle)\n\t{\n\t\tdata[i++]=MergeTree[deep][p1++];\n\t}\n\twhile(p2<=right)\n\t{\n\t\tdata[i++]=MergeTree[deep][p2++];\n\t}\n\t//cout<<"Degree:\xe3\x80\x80"<<deep<<"  Left: "<<left<<"  Right:  "<<right<<"  Data:  ";\n\tfor(i=left;i<=right;i++)\n\t{\n\t\tMergeTree[deep][i]=data[i];\n\t\t//cout<<MergeTree[deep][i]<<" ";\n\t}\n\t//cout<<endl;\n}\nvoid MergeSort(int *data,int left,int right,int deep,int point)\n{\n\tint middle=(left+right)/2;\n\tLinearTree[point].left=left;\n\tLinearTree[point].right=right;\n\tLinearTree[point].middle=middle;\n\tif(left<right)\n\t{\n\t\tMergeSort(data,left,middle,deep+1,point*2);\n\t\tMergeSort(data,middle+1,right,deep+1,point*2+1);\n\t\tMerge(data,left,right,middle,deep);\n\t}\n\telse if(left==right)\n\t{\n\t//\tcout<<"Degree:\xe3\x80\x80"<<deep<<"  Left: "<<left<<"  Right:  "<<right<<"  Data:  ";\n\t\tMergeTree[deep][left]=data[left];\n\t\t//cout<<MergeTree[deep][left]<<endl;\n\t}\n}\nint result (int left,int right,int key, int deep)\n{\n\tint l,r,middle;\n\tl=left;r=right;\n\twhile(l<=r)\n\t{\n\t\tmiddle=(l+r)/2;\n\t\tif(MergeTree[deep][middle]>key)\n\t\t{\n\t\t\tr=middle-1;\n\t\t}\n\t\telse if(MergeTree[deep][middle]<key)\n\t\t{\n\t\t\tl=middle+1;\n\t\t}\n\t\telse\n\t\t\treturn middle-left+1;\n\t}\n\t//if(r!=l){cout<<l<<"|"<<r<<"|"<<left<<"|"<<right<<"|"<<key<<"|"<<deep<<endl;system("pause");}\n\treturn r-left+1;\n}\nint count(int left,int right,int point,int key,int deep)\n{\n\t//cout<<"deep :"<<deep<<" point: "<<point<<endl;\n\tif(LinearTree[point].left==left&&LinearTree[point].right==right)\n\t\treturn result(left,right,key,deep);\n\tif(right<=LinearTree[point].middle)\n\t\treturn count(left,right,point*2,key,deep+1);\n\tif(left>LinearTree[point].middle)\n\t\treturn count(left,right,point*2+1,key,deep+1);\n\treturn count(left,LinearTree[point].middle,point*2,key,deep+1)+count(LinearTree[point].middle+1,right,point*2+1,key,deep+1);\n}\nint binaryfind(int n,int left,int right,int location)\n{\n\tint i,j,temp,middle;\n\ti=1;j=n;\n\twhile(i<=j)\n\t{\n\t\tmiddle=(i+j)/2;\n\t\ttemp=count(left,right,1,MergeTree[1][middle],1);\n\t\tif(temp>=location)\n\t\t\tj=middle-1;\n\t\telse if(temp<location)\n\t\t\ti=middle+1;\t\n\t}\n\treturn MergeTree[1][i];\n}\nint main()\n{\n\tint input[len];\n\tint n,m,i,start,end,find;\n\tcin>>n>>m;\n\tfor(i=1;i<=n;i++)\n\t{\n\t\tscanf("%d",input+i);\n\t\trecord[i]=input[i];\n\t}\n\tMergeSort(input,1,n,1,1);\n\t//for(i=1;LinearTree[i].left>0;i++)\n\t\t//cout<<"Left:"<<LinearTree[i].left<<"Right:"<<LinearTree[i].right<<"Middle: "<<LinearTree[i].middle<<endl;\n\twhile(m--)\n\t{\n\t\tscanf("%d%d%d",&start,&end,&find);\n\t\tcout<<binaryfind(n,start,end, find)<<endl;\n\t}\n\t//system("pause");\n\treturn 0;\n}'
+/*
+2104: K-th Number
+http://bailian.openjudge.cn/practice/2104/
+
+
+描述
+You are working for Macrohard company in data structures department. After failing your previous task about key insertion you were asked to write a new data structure that would be able to return quickly k-th order statistics in the array segment. That is, given an array a[1...n] of different integer numbers, your program must answer a series of questions Q(i, j, k) in the form: "What would be the k-th number in a[i...j] segment, if this segment was sorted?" For example, consider the array a = (1, 5, 2, 6, 3, 7, 4). Let the question be Q(2, 5, 3). The segment a[2...5] is (5, 2, 6, 3). If we sort this segment, we get (2, 3, 5, 6), the third number is 5, and therefore the answer to the question is 5. 
+输入
+The first line of the input file contains n --- the size of the array, and m --- the number of questions to answer (1 <= n <= 100 000, 1 <= m <= 5 000). The second line contains n different integer numbers not exceeding 109 by their absolute values --- the array for which the answers should be given. The following m lines contain question descriptions, each description consists of three numbers: i, j, and k (1 <= i <= j <= n, 1 <= k <= j - i + 1) and represents the question Q(i, j, k). 
+输出
+For each question output the answer to it --- the k-th number in sorted a[i...j] segment. 
+样例输入
+7 3
+1 5 2 6 3 7 4
+2 5 3
+4 4 1
+1 7 3
+样例输出
+5
+6
+3
+提示
+This problem has huge input,so please use c-style input(scanf,printf),or you may got time limit exceed.
+来源
+Northeastern Europe 2004, Northern Subregion
+
+*/
+
+#include<iostream>
+#include"stdio.h"
+using namespace std;
+#define degree 20
+#define len 100010
+int MergeTree[degree][len]={0};//归并树，记录的是归并排序中结果的部分
+int record[len]={0};
+/*简单解释：二分+归并排序+线段树+二分
+
+首先建树：按照归并排序的过程，先走到底，然后将该层（deep）[l...r]归并后得到的数据存到seq[deep][l...r]中去，则这一小段始终是有序的。。。。可以想象，最上层是排好序的数组，所有叶子节点组合起来就是原数组。。。
+
+查询分三个步骤：1是在最上层二分选取一个元素key，查询key在[l, r]中大于几个数num，取得一个最小的num>=k的那个，则为所求，通过线段树去查询key在[l, r]中大于几个数num，到了符合的区间后就可以通过二分来求得其在本区间大于几个数。。。貌似说不清楚了。。*/
+struct//线段树，记录的是归并排序中划分的过程
+{
+	int left; int right; int middle;
+}LinearTree[len*4];
+
+void Merge(int *data,int left,int right,int middle,int deep)
+{
+	//cout<<"Deep: "<<deep<<endl;
+	int i,j,p1,p2;
+	for(i=left;i<=right;i++)
+		MergeTree[deep][i]=data[i];
+	p1=left;p2=middle+1;
+	i=left;
+	while(p1<=middle&&p2<=right)
+	{
+		if(MergeTree[deep][p1]>MergeTree[deep][p2])
+			data[i++]=MergeTree[deep][p2++];
+		else
+			data[i++]=MergeTree[deep][p1++];
+	}
+	while(p1<=middle)
+	{
+		data[i++]=MergeTree[deep][p1++];
+	}
+	while(p2<=right)
+	{
+		data[i++]=MergeTree[deep][p2++];
+	}
+	//cout<<"Degree:　"<<deep<<"  Left: "<<left<<"  Right:  "<<right<<"  Data:  ";
+	for(i=left;i<=right;i++)
+	{
+		MergeTree[deep][i]=data[i];
+		//cout<<MergeTree[deep][i]<<" ";
+	}
+	//cout<<endl;
+}
+void MergeSort(int *data,int left,int right,int deep,int point)
+{
+	int middle=(left+right)/2;
+	LinearTree[point].left=left;
+	LinearTree[point].right=right;
+	LinearTree[point].middle=middle;
+	if(left<right)
+	{
+		MergeSort(data,left,middle,deep+1,point*2);
+		MergeSort(data,middle+1,right,deep+1,point*2+1);
+		Merge(data,left,right,middle,deep);
+	}
+	else if(left==right)
+	{
+	//	cout<<"Degree:　"<<deep<<"  Left: "<<left<<"  Right:  "<<right<<"  Data:  ";
+		MergeTree[deep][left]=data[left];
+		//cout<<MergeTree[deep][left]<<endl;
+	}
+}
+int result (int left,int right,int key, int deep)
+{
+	int l,r,middle;
+	l=left;r=right;
+	while(l<=r)
+	{
+		middle=(l+r)/2;
+		if(MergeTree[deep][middle]>key)
+		{
+			r=middle-1;
+		}
+		else if(MergeTree[deep][middle]<key)
+		{
+			l=middle+1;
+		}
+		else
+			return middle-left+1;
+	}
+	//if(r!=l){cout<<l<<"|"<<r<<"|"<<left<<"|"<<right<<"|"<<key<<"|"<<deep<<endl;system("pause");}
+	return r-left+1;
+}
+int count(int left,int right,int point,int key,int deep)
+{
+	//cout<<"deep :"<<deep<<" point: "<<point<<endl;
+	if(LinearTree[point].left==left&&LinearTree[point].right==right)
+		return result(left,right,key,deep);
+	if(right<=LinearTree[point].middle)
+		return count(left,right,point*2,key,deep+1);
+	if(left>LinearTree[point].middle)
+		return count(left,right,point*2+1,key,deep+1);
+	return count(left,LinearTree[point].middle,point*2,key,deep+1)+count(LinearTree[point].middle+1,right,point*2+1,key,deep+1);
+}
+int binaryfind(int n,int left,int right,int location)
+{
+	int i,j,temp,middle;
+	i=1;j=n;
+	while(i<=j)
+	{
+		middle=(i+j)/2;
+		temp=count(left,right,1,MergeTree[1][middle],1);
+		if(temp>=location)
+			j=middle-1;
+		else if(temp<location)
+			i=middle+1;	
+	}
+	return MergeTree[1][i];
+}
+int main()
+{
+	int input[len];
+	int n,m,i,start,end,find;
+	cin>>n>>m;
+	for(i=1;i<=n;i++)
+	{
+		scanf("%d",input+i);
+		record[i]=input[i];
+	}
+	MergeSort(input,1,n,1,1);
+	//for(i=1;LinearTree[i].left>0;i++)
+		//cout<<"Left:"<<LinearTree[i].left<<"Right:"<<LinearTree[i].right<<"Middle: "<<LinearTree[i].middle<<endl;
+	while(m--)
+	{
+		scanf("%d%d%d",&start,&end,&find);
+		cout<<binaryfind(n,start,end, find)<<endl;
+	}
+	//system("pause");
+	return 0;
+}

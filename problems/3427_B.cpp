@@ -1,1 +1,94 @@
-b'/*\n3427: B\nhttp://bailian.openjudge.cn/practice/3427/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\n\xe5\x86\x99\xe4\xb8\x80\xe4\xb8\xaa\xe7\xa8\x8b\xe5\xba\x8f\xe5\xae\x8c\xe6\x88\x90\xe4\xbb\xa5\xe4\xb8\x8b\xe5\x91\xbd\xe4\xbb\xa4\xef\xbc\x9anew id \xe2\x80\x94\xe2\x80\x94\xe6\x96\xb0\xe5\xbb\xba\xe4\xb8\x80\xe4\xb8\xaa\xe6\x8c\x87\xe5\xae\x9a\xe7\xbc\x96\xe5\x8f\xb7\xe4\xb8\xbaid\xe7\x9a\x84\xe5\xba\x8f\xe5\x88\x97(id<10000)add id num\xe2\x80\x94\xe2\x80\x94\xe5\x90\x91\xe7\xbc\x96\xe5\x8f\xb7\xe4\xb8\xbaid\xe7\x9a\x84\xe5\xba\x8f\xe5\x88\x97\xe5\x8a\xa0\xe5\x85\xa5\xe6\x95\xb4\xe6\x95\xb0nummerge id1 id2\xe2\x80\x94\xe2\x80\x94\xe5\x90\x88\xe5\xb9\xb6\xe5\xba\x8f\xe5\x88\x97id1\xe5\x92\x8cid2\xe4\xb8\xad\xe7\x9a\x84\xe6\x95\xb0\xef\xbc\x8c\xe5\xb9\xb6\xe5\xb0\x86id2\xe6\xb8\x85\xe7\xa9\xbaunique id\xe2\x80\x94\xe2\x80\x94\xe5\x8e\xbb\xe6\x8e\x89\xe5\xba\x8f\xe5\x88\x97id\xe4\xb8\xad\xe9\x87\x8d\xe5\xa4\x8d\xe7\x9a\x84\xe5\x85\x83\xe7\xb4\xa0out id \xe2\x80\x94\xe2\x80\x94\xe4\xbb\x8e\xe5\xb0\x8f\xe5\x88\xb0\xe5\xa4\xa7\xe8\xbe\x93\xe5\x87\xba\xe7\xbc\x96\xe5\x8f\xb7\xe4\xb8\xbaid\xe7\x9a\x84\xe5\xba\x8f\xe5\x88\x97\xe4\xb8\xad\xe7\x9a\x84\xe5\x85\x83\xe7\xb4\xa0\xef\xbc\x8c\xe4\xbb\xa5\xe7\xa9\xba\xe6\xa0\xbc\xe9\x9a\x94\xe5\xbc\x80\n\xe8\xbe\x93\xe5\x85\xa5\n\xe7\xac\xac\xe4\xb8\x80\xe8\xa1\x8c\xe4\xb8\x80\xe4\xb8\xaa\xe6\x95\xb0n\xef\xbc\x8c\xe8\xa1\xa8\xe7\xa4\xba\xe6\x9c\x89\xe5\xa4\x9a\xe5\xb0\x91\xe4\xb8\xaa\xe5\x91\xbd\xe4\xbb\xa4( n\xef\xbc\x9c\xef\xbc\x9d\xef\xbc\x92\xef\xbc\x90\xef\xbc\x90\xef\xbc\x90\xef\xbc\x90\xef\xbc\x90)\xe3\x80\x82\xe4\xbb\xa5\xe5\x90\x8en\xe8\xa1\x8c\xe6\xaf\x8f\xe8\xa1\x8c\xe4\xb8\x80\xe4\xb8\xaa\xe5\x91\xbd\xe4\xbb\xa4\xe3\x80\x82\n\xe8\xbe\x93\xe5\x87\xba\n\xe6\x8c\x89\xe9\xa2\x98\xe7\x9b\xae\xe8\xa6\x81\xe6\xb1\x82\xe8\xbe\x93\xe5\x87\xba\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n16\r\nnew 1\r\nnew 2\r\nadd 1 1\r\nadd 1 2\r\nadd 1 3\r\nadd 2 1\r\nadd 2 2\r\nadd 2 3\r\nadd 2 4\r\nout 1\r\nout 2\r\nmerge 1 2\r\nout 1\r\nout 2\r\nunique 1\r\nout 1\r\n\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n1 2 3 \r\n1 2 3 4\r\n1 1 2 2 3 3 4\r\n\r\n1 2 3 4\r\n\n\n*/\n\n#include<list>\n#include<iostream>\n#include<algorithm>\nusing namespace std;\nint main()\n{\n\tlist<int> use[10001];\n\tint n,i,num,num2,data;\n\tchar str[20];\n\tcin>>n;\n\tfor(i=0;i<n;i++)\n\t{\n\t\tcin>>str;\n\t\tif(strcmp(str,"new")==0)\n\t\t{\n\t\t\tcin>>num;\n\t\t}\n\t\tif(strcmp(str,"add")==0)\n\t\t{\n\t\t\tcin>>num>>data;\n\t\t\tuse[num].push_back(data);\n\t\t}\n\t\tif(strcmp(str,"merge")==0)\n\t\t{\n\t\t\tcin>>num>>num2;\n\t\t\tuse[num].merge(use[num2]);\n\t\t\t/*merge(use[num].begin(),use[num].end(),use[num2].begin(),use[num2].end(),temp.begin());\n\t\t\tuse[num2].clear();\n\t\t\tlist<int>::const_iterator i; \n\t\t\ti=use[num].begin();\n\t\t\tcopy(temp.begin(),temp.end(),i);*/\n\n\t\t}\n\t\tif(strcmp(str,"unique")==0)\n\t\t{\n\t\t\tcin>>num;\n\t\t\tuse[num].sort();\n\t\t\tuse[num].unique();\n\t\t}\n\t\tif(strcmp(str,"out")==0)\n\t\t{\n\t\t\tcin>>num;\n\t\t\tuse[num].sort();\n\t\t\tlist<int>::const_iterator i; \n\t\t\tfor(i=use[num].begin();i!=use[num].end();++i)\n\t\t\t{\n\t\t\t\tcout<<*i<<" ";\n\t\t\t}\n\t\t\tcout<<endl;\n\t\t}\n\n\t}\n\treturn 0;\n}'
+/*
+3427: B
+http://bailian.openjudge.cn/practice/3427/
+
+
+描述
+写一个程序完成以下命令：new id ——新建一个指定编号为id的序列(id<10000)add id num——向编号为id的序列加入整数nummerge id1 id2——合并序列id1和id2中的数，并将id2清空unique id——去掉序列id中重复的元素out id ——从小到大输出编号为id的序列中的元素，以空格隔开
+输入
+第一行一个数n，表示有多少个命令( n＜＝２０００００)。以后n行每行一个命令。
+输出
+按题目要求输出
+样例输入
+16
+new 1
+new 2
+add 1 1
+add 1 2
+add 1 3
+add 2 1
+add 2 2
+add 2 3
+add 2 4
+out 1
+out 2
+merge 1 2
+out 1
+out 2
+unique 1
+out 1
+
+样例输出
+1 2 3 
+1 2 3 4
+1 1 2 2 3 3 4
+
+1 2 3 4
+
+
+*/
+
+#include<list>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int main()
+{
+	list<int> use[10001];
+	int n,i,num,num2,data;
+	char str[20];
+	cin>>n;
+	for(i=0;i<n;i++)
+	{
+		cin>>str;
+		if(strcmp(str,"new")==0)
+		{
+			cin>>num;
+		}
+		if(strcmp(str,"add")==0)
+		{
+			cin>>num>>data;
+			use[num].push_back(data);
+		}
+		if(strcmp(str,"merge")==0)
+		{
+			cin>>num>>num2;
+			use[num].merge(use[num2]);
+			/*merge(use[num].begin(),use[num].end(),use[num2].begin(),use[num2].end(),temp.begin());
+			use[num2].clear();
+			list<int>::const_iterator i; 
+			i=use[num].begin();
+			copy(temp.begin(),temp.end(),i);*/
+
+		}
+		if(strcmp(str,"unique")==0)
+		{
+			cin>>num;
+			use[num].sort();
+			use[num].unique();
+		}
+		if(strcmp(str,"out")==0)
+		{
+			cin>>num;
+			use[num].sort();
+			list<int>::const_iterator i; 
+			for(i=use[num].begin();i!=use[num].end();++i)
+			{
+				cout<<*i<<" ";
+			}
+			cout<<endl;
+		}
+
+	}
+	return 0;
+}

@@ -1,1 +1,82 @@
-b'/*\nA: The Castle\nhttp://cxsjsx.openjudge.cn/contest1788/A/\n\n\n\xe6\x8f\x8f\xe8\xbf\xb0\n     1   2   3   4   5   6   7     ############################# 1 #   |   #   |   #   |   |   #   #####---#####---#---#####---# 2 #   #   |   #   #   #   #   #   #---#####---#####---#####---# 3 #   |   |   #   #   #   #   #   #---#########---#####---#---# 4 #   #   |   |   |   |   #   #   #############################(Figure 1)#  = Wall   |  = No wall-  = No wallFigure 1 shows the map of a castle.Write a program that calculates1. how many rooms the castle has2. how big the largest room isThe castle is divided into m * n (m<=50, n<=50) square modules. Each such module can have between zero and four walls. \n\xe8\xbe\x93\xe5\x85\xa5\nYour program is to read from standard input. The first line contains the number of modules in the north-south direction and the number of modules in the east-west direction. In the following lines each module is described by a number (0 <= p <= 15). This number is the sum of: 1 (= wall to the west), 2 (= wall to the north), 4 (= wall to the east), 8 (= wall to the south). Inner walls are defined twice; a wall to the south in module 1,1 is also indicated as a wall to the north in module 2,1. The castle always has at least two rooms.\n\xe8\xbe\x93\xe5\x87\xba\nYour program is to write to standard output: First the number of rooms, then the area of the largest room (counted in modules).\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x85\xa5\n4\r\n7\r\n11 6 11 6 3 10 6\r\n7 9 6 13 5 15 5\r\n1 10 12 7 13 7 5\r\n13 11 10 8 10 12 13\n\xe6\xa0\xb7\xe4\xbe\x8b\xe8\xbe\x93\xe5\x87\xba\n5\r\n9\n\xe6\x9d\xa5\xe6\xba\x90\nIOI 1994\n\n*/\n\n#include<iostream>\r\nusing namespace std;\r\nint a,b;//\xe8\xbf\xb7\xe5\xae\xab\xe7\x9a\x84\xe9\x95\xbf\xe5\x92\x8c\xe5\xae\xbd\r\nint num=0;//\xe6\x88\xbf\xe9\x97\xb4\xe6\x95\xb0\r\nint maxe=0;//\xe6\x9c\x80\xe5\xa4\xa7\xe6\x88\xbf\xe9\x97\xb4\r\nint sum=0;//\xe4\xb8\xb4\xe6\x97\xb6\xe5\xad\x98\xe5\x82\xa8\xe6\xaf\x8f\xe4\xb8\xaa\xe6\x88\xbf\xe9\x97\xb4\xe7\x9a\x84\xe6\xa0\xbc\xe6\x95\xb0\r\nint castle[55][55];//\xe5\xad\x98\xe5\x82\xa8\xe8\xbf\xb7\xe5\xae\xab\xe7\x9a\x84\xe6\x95\xb0\xe6\x8d\xae\r\nint pass[55][55];//\xe5\xad\x98\xe5\x82\xa8\xe8\xaf\xa5\xe7\x82\xb9\xe6\x98\xaf\xe5\x90\xa6\xe8\xb5\xb0\xe8\xbf\x87\r\nint go(int hang,int lie)//\xe9\x80\x92\xe5\xbd\x92\xe5\x87\xbd\xe6\x95\xb0\r\n{\r\n\tint temp[4];//\xe5\xad\x98\xe5\x82\xa84\xe9\x9d\xa2\xe5\xa2\x99\xe7\x9a\x84\xe6\x95\xb0\xe6\x8d\xae\r\n\tif(hang<1||lie<1||hang>a||lie>b)return 0;//\xe8\xb6\x8a\xe7\x95\x8c\xe8\xbf\x94\xe5\x9b\x9e0\r\n\tif(pass[hang][lie]==1)return 0;//\xe5\xb7\xb2\xe7\xbb\x8f\xe8\xb5\xb0\xe8\xbf\x87\xe8\xbf\x94\xe5\x9b\x9e0\r\n\tif(castle[hang][lie]/8>0&&castle[hang][lie]%8/4>0&&castle[hang][lie]%4/2>0&&castle[hang][lie]%2>0)//\xe6\x88\xbf\xe9\x97\xb4\xe5\x8f\xaa\xe6\x9c\x89\xe4\xb8\x80\xe6\xa0\xbc\xe8\xbf\x94\xe5\x9b\x9e1\r\n\t{\r\n\t\treturn 1;\r\n\t}\r\n\tpass[hang][lie]=1;//\xe5\xb0\x86\xe6\xa0\xbc\xe5\xad\x90\xe6\xa0\x87\xe8\xae\xb0\xe4\xb8\xba\xe8\xb5\xb0\xe8\xbf\x87\r\n\ttemp[0]=castle[hang][lie]/8;\r\n\ttemp[1]=castle[hang][lie]%8/4;\r\n\ttemp[2]=castle[hang][lie]%4/2;\r\n\ttemp[3]=castle[hang][lie]%2;\r\n\treturn (1+(temp[0]==1 ? 0 :go(hang+1,lie))+(temp[1]==1 ? 0:go(hang,lie+1))+(temp[2]==1 ? 0 :go(hang-1,lie))+(temp[3]==1 ? 0 :go(hang,lie-1)));//\xe6\xb2\xa1\xe6\x9c\x89\xe5\xa2\x99\xe7\x9a\x84\xe5\x8f\xaf\xe4\xbb\xa5\xe9\x80\x9a\xe8\xbf\x87\xef\xbc\x8c\xe8\xa7\x82\xe5\xaf\x9f\xe5\x91\xa8\xe5\x9b\xb4\xe7\x9a\x84\xe6\xa0\xbc\xe5\xad\x90\r\n}\r\nint main()\r\n{\r\n\tmemset(pass,0,sizeof(pass));//\xe5\x88\x9d\xe5\xa7\x8b\xe5\x8c\x96\r\n\tmemset(castle,0,sizeof(castle));\r\n\tint i,j;\r\n\tcin>>a>>b;//\xe8\xbe\x93\xe5\x85\xa5\xe9\x95\xbf\xe5\x92\x8c\xe5\xae\xbd\r\n\tfor(i=1;i<=a;i++)\r\n\t{\r\n\t\tfor(j=1;j<=b;j++)\r\n\t\t{\r\n\t\t\tcin>>castle[i][j];\r\n\t\t}\r\n\t}\r\n\r\n\tfor(i=1;i<=a;i++)//\xe4\xbb\xa5\xe6\x89\x80\xe6\x9c\x89\xe6\xb2\xa1\xe6\x9c\x89\xe5\x81\x9a\xe8\xbf\x87\xe7\x9a\x84\xe6\xa0\xbc\xe5\xad\x90\xe4\xb8\xba\xe5\x88\x9d\xe5\xa7\x8b\xef\xbc\x8c\xe6\x89\xbe\xe5\x88\xb0\xe6\x95\xb4\xe4\xb8\xaa\xe6\x88\xbf\xe9\x97\xb4\xe7\x9a\x84\xe5\x85\xa8\xe9\x83\xa8\xe6\xa0\xbc\xe5\xad\x90\r\n\t{\r\n\t\tfor(j=1;j<=b;j++)\r\n\t\t{\r\n\t\t\tif(pass[i][j]==0)\r\n\t\t\t{\r\n\t\t\t\tsum=go(i,j);//\xe5\xbe\x97\xe5\x88\xb0\xe8\xaf\xa5\xe6\x88\xbf\xe9\x97\xb4\xe7\x9a\x84\xe6\xa0\xbc\xe5\xad\x90\xe6\x95\xb0\r\n\t\t\t\tif(sum>maxe)maxe=sum;//\xe5\xad\x98\xe5\x82\xa8\xe6\x9c\x80\xe5\xa4\xa7\xe7\x9a\x84\xe6\xa0\xbc\xe5\xad\x90\r\n\t\t\t\tnum++;//\xe6\x88\xbf\xe9\x97\xb4\xe6\x95\xb0+1\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t//\xe8\xbe\x93\xe5\x87\xba\r\n\tcout<<num<<endl;\r\n    cout<<maxe<<endl;\r\n\r\n\treturn 0;\r\n}'
+/*
+A: The Castle
+http://cxsjsx.openjudge.cn/contest1788/A/
+
+
+描述
+     1   2   3   4   5   6   7     ############################# 1 #   |   #   |   #   |   |   #   #####---#####---#---#####---# 2 #   #   |   #   #   #   #   #   #---#####---#####---#####---# 3 #   |   |   #   #   #   #   #   #---#########---#####---#---# 4 #   #   |   |   |   |   #   #   #############################(Figure 1)#  = Wall   |  = No wall-  = No wallFigure 1 shows the map of a castle.Write a program that calculates1. how many rooms the castle has2. how big the largest room isThe castle is divided into m * n (m<=50, n<=50) square modules. Each such module can have between zero and four walls. 
+输入
+Your program is to read from standard input. The first line contains the number of modules in the north-south direction and the number of modules in the east-west direction. In the following lines each module is described by a number (0 <= p <= 15). This number is the sum of: 1 (= wall to the west), 2 (= wall to the north), 4 (= wall to the east), 8 (= wall to the south). Inner walls are defined twice; a wall to the south in module 1,1 is also indicated as a wall to the north in module 2,1. The castle always has at least two rooms.
+输出
+Your program is to write to standard output: First the number of rooms, then the area of the largest room (counted in modules).
+样例输入
+4
+7
+11 6 11 6 3 10 6
+7 9 6 13 5 15 5
+1 10 12 7 13 7 5
+13 11 10 8 10 12 13
+样例输出
+5
+9
+来源
+IOI 1994
+
+*/
+
+#include<iostream>
+using namespace std;
+int a,b;//迷宫的长和宽
+int num=0;//房间数
+int maxe=0;//最大房间
+int sum=0;//临时存储每个房间的格数
+int castle[55][55];//存储迷宫的数据
+int pass[55][55];//存储该点是否走过
+int go(int hang,int lie)//递归函数
+{
+	int temp[4];//存储4面墙的数据
+	if(hang<1||lie<1||hang>a||lie>b)return 0;//越界返回0
+	if(pass[hang][lie]==1)return 0;//已经走过返回0
+	if(castle[hang][lie]/8>0&&castle[hang][lie]%8/4>0&&castle[hang][lie]%4/2>0&&castle[hang][lie]%2>0)//房间只有一格返回1
+	{
+		return 1;
+	}
+	pass[hang][lie]=1;//将格子标记为走过
+	temp[0]=castle[hang][lie]/8;
+	temp[1]=castle[hang][lie]%8/4;
+	temp[2]=castle[hang][lie]%4/2;
+	temp[3]=castle[hang][lie]%2;
+	return (1+(temp[0]==1 ? 0 :go(hang+1,lie))+(temp[1]==1 ? 0:go(hang,lie+1))+(temp[2]==1 ? 0 :go(hang-1,lie))+(temp[3]==1 ? 0 :go(hang,lie-1)));//没有墙的可以通过，观察周围的格子
+}
+int main()
+{
+	memset(pass,0,sizeof(pass));//初始化
+	memset(castle,0,sizeof(castle));
+	int i,j;
+	cin>>a>>b;//输入长和宽
+	for(i=1;i<=a;i++)
+	{
+		for(j=1;j<=b;j++)
+		{
+			cin>>castle[i][j];
+		}
+	}
+
+	for(i=1;i<=a;i++)//以所有没有做过的格子为初始，找到整个房间的全部格子
+	{
+		for(j=1;j<=b;j++)
+		{
+			if(pass[i][j]==0)
+			{
+				sum=go(i,j);//得到该房间的格子数
+				if(sum>maxe)maxe=sum;//存储最大的格子
+				num++;//房间数+1
+			}
+		}
+	}
+	//输出
+	cout<<num<<endl;
+    cout<<maxe<<endl;
+
+	return 0;
+}
